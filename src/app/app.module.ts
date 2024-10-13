@@ -3,8 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Submissions } from 'src/entities/Submissions';
-import { Players } from 'src/entities/Players';
+import { TypeOrmConfig } from 'src/configs/typeorm.config';
 
 @Module({
   imports: [
@@ -12,13 +11,7 @@ import { Players } from 'src/entities/Players';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get<string>('DB_URL'),
-        entities: [Submissions, Players],
-        synchronize: true,
-        logging: true,
-      }),
+      useClass: TypeOrmConfig,
     }),
   ],
   controllers: [AppController],
