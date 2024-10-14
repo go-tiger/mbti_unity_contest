@@ -6,9 +6,6 @@ export class Submissions {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @Column('json', { name: 'content' })
-  content: string;
-
   @Column('integer', { name: 'p_comment_no' })
   pCommentNo: number;
 
