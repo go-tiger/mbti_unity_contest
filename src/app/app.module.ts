@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from 'src/configs/typeorm.config';
 import { SubmissionModule } from 'src/submission/submission.module';
 import { HttpModule } from '@nestjs/axios';
+import { PlayerModule } from 'src/player/player.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { HttpModule } from '@nestjs/axios';
     }),
     HttpModule,
     SubmissionModule,
+    PlayerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
