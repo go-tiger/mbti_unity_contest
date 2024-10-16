@@ -77,4 +77,23 @@ export class PlayerService {
       }
     }
   }
+
+  async getTeams() {
+    const teamP = await this.playersRepository.find({
+      where: { pOrJ: false },
+      order: { upCount: 'DESC' },
+      take: 14,
+    });
+
+    const teamJ = await this.playersRepository.find({
+      where: { pOrJ: true },
+      order: { upCount: 'DESC' },
+      take: 14,
+    });
+
+    return {
+      teamP,
+      teamJ,
+    };
+  }
 }
