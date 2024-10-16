@@ -1,23 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
   fetch('https://port-0-mbti-unity-contest-m2b4c11v2fad4f29.sel4.cloudtype.app/player')
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error('Error');
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       populateTeamTable(data.teamP, 'teamP');
       populateTeamTable(data.teamJ, 'teamJ');
     })
-    .catch(error => console.error('Error fetching data:', error));
+    .catch((error) => console.error('Error fetching data:', error));
 
   function populateTeamTable(team, tableId) {
     const tbody = document.querySelector(`#${tableId} tbody`);
     tbody.innerHTML = '';
-    team.forEach(player => {
+    team.forEach((player, index) => {
       const row = document.createElement('tr');
+
+      if (index >= 14) row.classList.add('sub');
       row.innerHTML = `
+        <td>${index + 1}</td>
         <td>${player.nickname}</td>
         <td>${player.afreecatvId}</td>
         <td>${player.minecraftId}</td>
@@ -42,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(requestBody),
-        }
+        },
       );
 
       if (!submissionResponse.ok) {
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(requestBody),
-        }
+        },
       );
 
       if (!playerResponse.ok) {
@@ -75,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       alert('갱신이 완료되었습니다!');
+      location.reload();
     } catch (error) {
       console.error('Error:', error);
       alert('갱신 중 오류가 발생했습니다.');
