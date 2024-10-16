@@ -26,9 +26,7 @@ export class PlayerService {
     do {
       const afComments = await lastValueFrom(
         this.httpService
-          .get(
-            `https://chapi.sooplive.co.kr/api/${bjname}/title/${titleNo}/comment?orderby=like_cnt&page=${currentPage}`,
-          )
+          .get(`https://chapi.sooplive.co.kr/api/${bjname}/title/${titleNo}/comment?page=${currentPage}`)
           .pipe(map((response) => response.data)),
       );
 
@@ -45,7 +43,10 @@ export class PlayerService {
       currentPage++;
     } while (currentPage <= lastPage);
 
+    allComments.sort((a, b) => a.pCommentNo - b.pCommentNo);
+
     const submissions = await this.submissionsRepository.find();
+    submissions.sort((a, b) => a.pCommentNo - b.pCommentNo);
 
     for (const sub of submissions) {
       const matchingComment = allComments.find((comment) => comment.pCommentNo === sub.pCommentNo);
@@ -81,14 +82,14 @@ export class PlayerService {
   async getTeams() {
     const teamP = await this.playersRepository.find({
       where: { pOrJ: false },
-      order: { upCount: 'DESC' },
-      take: 14,
+      order: { upCount: 'DESC', id: 'ASC' },
+      take: 17,
     });
 
     const teamJ = await this.playersRepository.find({
       where: { pOrJ: true },
-      order: { upCount: 'DESC' },
-      take: 14,
+      order: { upCount: 'DESC', id: 'ASC' },
+      take: 17,
     });
 
     return {
